@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ballot Machine — Bharat Votes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Noto+Serif+Devanagari:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --saffron: #FF9933;
+      --white: #FFFFFF;
+      --green: #138808;
+      --navy: #000080;
+      --light-blue: #E6F0FF;
+      --light-green: #E6FFE6;
+      --light-saffron: #FFF0E0;
+      --dark-blue: #1E3A8A;
+    }
+    
+    body {
+      font-family: 'Hind Siliguri', sans-serif;
+      background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      min-height: 100vh;
+    }
+    
+    .brand-font {
+      font-family: 'Noto Serif Devanagari', serif;
+    }
+    
+    .header-gradient {
+      background: linear-gradient(135deg, var(--saffron) 0%, var(--green) 100%);
+    }
+    
+    .footer-gradient {
+      background: linear-gradient(135deg, var(--light-saffron) 0%, var(--light-green) 100%);
+      border-top: 2px solid var(--green);
+    }
+    
+    .ashoka-wheel {
+      width: 40px;
+      height: 40px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22c-5.514 0-10-4.486-10-10S极狐 6.486 2 12 2s10 4.486 10 10-4.486 10-10 10zm4.5-12.5c0 .828-.672 1.5-1.5 1.5s-1.5-.672-1.5-1.5.672-1.5 1.5-1.5 1.5.672 1.5 1.5zm-9 0c0 .828-.672 1.5-1.5 1.5s-1.5-.672-1.5-1.5.672-1.5 1.5-1.5 1.5.672 1.5 1.5zm9.5 4.5h-9c-.828 0-1.5-.672-1.5-1.5s.672-1.5 1.5-1.5h9c.828 0 1.5.672 1.5 1.5s-.672 1.5-1.5 1.5z' fill='%23FFFFFF'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    
+    .ashoka-wheel-small {
+      width: 24px;
+      height: 24px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22c-5.514 0-10-4.486-10-10S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10zm4.5-12.5c0 .828-.672 1.5-1.5 1.5s-1.5-.672-1.5-1.5.672-1.5 1.5-1.5 1.5.672 1.5 1.5zm-9 0c0 .828-.672 1.5-1.5 1.5s-1.5-.672-1.5-1.5.极狐 672-1.5 1.5-1.5 1.5.672 1.5 1.5zm9.5 4.5h-9c-.828 0-1.5-.672-1.5-1.5s.672-1.5 1.5-1.5h9c.828 0 1.5.672 1.5 1.5s-.672 1.5-1.5 1.5z' fill='%23000'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    
+    .header-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .header-btn-login {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+    
+    .header-btn-login:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .header-btn-signup {
+      background-color: white;
+      color: var(--green);
+    }
+    
+    .header-btn-signup:hover {
+      background-color: var(--light-green);
+    }
+    
+    .flash-message {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .ballot-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    
+    .voter-info-panel {
+      background: linear-gradient(135deg, var(--saffron) 0%, var(--green) 100%);
+      color: white;
+      padding: 24px;
+    }
+    
+    .timer-container {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      margin-top: 16px;
+    }
+    
+    .timer {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--dark-blue);
+    }
+    
+    .candidate-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 24px;
+    }
+    
+    .candidate-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      border: 1px solid #E5E7EB;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    .candidate-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .candidate-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    
+    .candidate-details {
+      padding: 20px;
+    }
+    
+    .candidate-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1F2937;
+      margin-bottom: 8px;
+    }
+    
+    .candidate-party {
+      font-size: 14px;
+      color: #6B7280;
+      margin-bottom: 12px;
+    }
+    
+    .candidate-constituency {
+      font-size: 14px;
+      color: #6B7280;
+      margin-bottom: 16px;
+    }
+    
+    .vote-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, var(--saffron) 0%, var(--green) 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .vote-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+    
+    .queue-panel {
+      background: #F9FAFB;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #E5E7EB;
+      margin-top: 20px;
+    }
+    
+    .queue-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .queue-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    .queue-item {
+      padding: 12px 16px;
+      background: white;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+    
+    .queue-number {
+      background: var(--saffron);
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .instructions-panel {
+      background: #F0F9FF;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid #BAE6FD;
+      margin-top: 20px;
+    }
+    
+    .instructions-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0C4A6E;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .instructions-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    .instructions-item {
+      padding: 8px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .instructions-item i {
+      color: var(--saffron);
+      margin-top: 4px;
+    }
+    
+    .no-candidates {
+      text-align: center;
+      padding: 40px 20px;
+      color: #6B7280;
+    }
+    
+    .no-candidates i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      display: block;
+      color: #9CA3AF;
+    }
+    
+    @media (max-width: 768px) {
+      .candidate-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .ballot-container {
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col relative">
+
+  <header class="header-gradient shadow-lg p-4 flex justify-between items-center sticky top-0 z-50">
+    <div class="flex items-center space-x-4">
+      <div class="flex items-center">
+        <div class="ashoka-wheel mr-3"></div>
+        <h1 class="text-3xl font-bold text-white brand-font drop-shadow-md">Bharat Votes</h1>
+      </div>
+      <div class="hidden md:block text-white text-sm">
+        <p>Empowering Democracy Through Technology</p>
+      </div>
+    </div>
+    <nav class="flex items-center space-x-4">
+      <a href="{{ url_for('main.login') }}" class="header-btn header-btn-login">
+        <i class="fas fa-sign-in-alt mr-2"></i>Login
+      </a>
+      <a href="{{ url_for('main.signup') }}" class="header-btn header-btn-signup">
+        <i class="fas fa-user-plus mr-2"></i>Sign Up
+      </a>
+    </nav>
+  </header>
+
+  <div class="container mx-auto mt-4 px-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="space-y-2">
+          {% for category, message in messages %}
+            <div class="flash-message flash-{{ category }}">
+              <i class="fas {% if category=='success' %}fa-check-circle{% elif category=='danger' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} mr-2"></i>
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <main id="main-content" class="flex-grow container mx-auto px-4 py-8">
+    <div class="max-w-6xl mx-auto">
+      <div class="ballot-container">
+        <div class="voter-info-panel">
+          <h2 class="text-2xl font-bold text-white">Ballot Machine — Booth {{ booth_number }}</h2>
+          <div id="welcomeMsg" class="text-white text-opacity-90 mt-2">Waiting for voter verification...</div>
+          <div id="voterInfo" class="mt-4"></div>
+          
+          <div class="timer-container">
+            <div class="text-sm text-gray-600 mb-2">Time Remaining to Cast Your Vote</div>
+            <div id="timer" class="timer">10:00</div>
+          </div>
+        </div>
+        
+        <div class="flex flex-col lg:flex-row">
+          <div class="lg:w-1/3 p-6 border-r border-gray-200">
+            <div class="queue-panel">
+              <div class="queue-title">
+                <i class="fas fa-users"></i>
+                <span>Voter Queue</span>
+              </div>
+              <div id="queueList" class="queue-list">
+                <div class="text-center text-gray-500 py-4">
+                  <i class="fas fa-user-clock text-2xl mb-2"></i>
+                  <p>No voters in queue</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="instructions-panel">
+              <div class="instructions-title">
+                <i class="fas fa-info-circle"></i>
+                <span>Voting Instructions</span>
+              </div>
+              <ul class="instructions-list">
+                <li class="instructions-item">
+                  <i class="fas fa-check-circle"></i>
+                  <div>You have <strong>10 minutes</strong> to cast your vote once your ballot is active.</div>
+                </li>
+                <li class="instructions-item">
+                  <i class="fas fa-check-circle"></i>
+                  <div>Select your preferred candidate and press <strong>Cast Vote</strong>.</div>
+                </li>
+                <li class="instructions-item">
+                  <i class="fas fa-check-circle"></i>
+                  <div>Once vote is cast, a receipt will be generated at the Receipt Machine.</div>
+                </li>
+                <li class="instructions-item">
+                  <i class="fas fa-check-circle"></i>
+                  <div>If you don't cast within the time, your ballot will expire.</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <div class="lg:w-2/3 p-6">
+            <h3 class="text-xl font-semibold text-gray-800 mb-6">Select Your Candidate</h3>
+            <div id="candidateList" class="candidate-grid">
+              <div class="no-candidates">
+                <i class="fas fa-user-alt-slash"></i>
+                <p>No candidates available. Ballot will activate after verification.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer-gradient text-gray-800 py-6 mt-8 text-center">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-center items-center mb-4">
+        <div class="ashoka-wheel-small mr-2"></div>
+        <p class="font-bold">Bharat Votes</p>
+      </div>
+      <p class="text-sm">&copy; 2025 Next Gen Voting. All rights reserved.</p>
+      <p class="text-xs mt-2">Empowering Indian Democracy Through Secure Digital Voting</p>
+    </div>
+  </footer>
+
+  <audio id="beepSound" src="{{ url_for('static', filename='beep.mp3') }}"></audio>
+
+  <script>
+    const booth = "{{ booth_number }}";
+    let activeVoterId = null;
+    let activeVoterName = null;
+    let timerInterval = null;
+    let deadline = null;
+    let lastPollQueue = [];
+    let isCasting = false;
+
+    // Play beep and flash overlay
+    function playBeep(){
+      const b = document.getElementById('beepSound');
+      if(!b) return;
+      b.currentTime = 0;
+      b.play().catch(()=>{});
+    }
+    
+    function flashScreen(color="green"){
+      const overlay = document.createElement('div');
+      overlay.style.position = 'fixed';
+      overlay.style.top = 0;
+      overlay.style.left = 0;
+      overlay.style.width = '100%';
+      overlay.style.height = '100%';
+      overlay.style.background = color;
+      overlay.style.opacity = '0.35';
+      overlay.style.zIndex = '9999';
+      document.body.appendChild(overlay);
+      setTimeout(()=> overlay.remove(), 450);
+    }
+
+    // Timer that counts down from minutes
+    function startTimer(minutes=10){
+      deadline = Date.now() + minutes * 60 * 1000;
+      if(timerInterval) clearInterval(timerInterval);
+      timerInterval = setInterval(()=>{
+        const diff = deadline - Date.now();
+        if(diff <= 0){
+          document.getElementById('timer').innerText = "00:00";
+          document.getElementById('timer').classList.add('text-red-600');
+          document.getElementById('candidateList').innerHTML = `
+            <div class="no-candidates">
+              <i class="fas fa-hourglass-end"></i>
+              <p>⏰ Time expired! Vote not cast.</p>
+            </div>
+          `;
+          clearInterval(timerInterval);
+          return;
+        }
+        const mins = Math.floor(diff / 60000);
+        const secs = Math.floor((diff % 60000) / 1000);
+        document.getElementById('timer').innerText = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+        
+        // Change color when time is running out
+        if (mins < 2) {
+          document.getElementById('timer').classList.add('text-red-600');
+        }
+      }, 1000);
+    }
+
+    // Fetch queue and oldest active ballot (FIFO)
+    async function pollBallot(){
+      try {
+        // 1) Get the active ballot (oldest active)
+        const resp = await fetch(`/api/poll_ballot/${booth}`);
+        if(!resp.ok){ throw new Error('poll_ballot failed'); }
+        const j = await resp.json();
+
+        // 2) Get queue snapshot by calling activity feed and filtering ballots for this booth (optional)
+        const qresp = await fetch('/api/activity_feed');
+        const qdata = qresp.ok ? await qresp.json() : [];
+        const queue = qdata.filter(e => e.type === 'ballot' && e.booth === booth && e.status === 'activated')
+                           .map(e => e.voter_id);
+        // update queue UI if changed
+        if(JSON.stringify(queue) !== JSON.stringify(lastPollQueue)){
+          lastPollQueue = queue;
+          renderQueue(queue);
+        }
+
+        if(j.active){
+          // if new active voter reached
+          if(activeVoterId !== j.voter_id){
+            activeVoterId = j.voter_id;
+            activeVoterName = j.voter_name || 'Unknown';
+            // UI update
+            document.getElementById('welcomeMsg').innerHTML = `✅ Welcome <b>${escapeHtml(activeVoterName)}</b> (ID: <b>${escapeHtml(activeVoterId)}</b>), your ballot is active.`;
+            document.getElementById('voterInfo').innerHTML = `<p><b>Voter ID:</b> ${escapeHtml(activeVoterId)}</p>`;
+            // load candidates
+            renderCandidates(j.candidates || []);
+            // visual alert
+            playBeep();
+            flashScreen('green');
+            // reset any casting flag
+            isCasting = false;
+            // start timer for 10 minutes
+            startTimer(10);
+          }
+        } else {
+          // no active ballot
+          activeVoterId = null;
+          activeVoterName = null;
+          document.getElementById('welcomeMsg').innerText = "Waiting for voter verification...";
+          document.getElementById('voterInfo').innerHTML = "";
+          document.getElementById('candidateList').innerHTML = `
+            <div class="no-candidates">
+              <i class="fas fa-user-alt-slash"></i>
+              <p>No candidates available. Ballot will activate after verification.</p>
+            </div>
+          `;
+          document.getElementById('timer').innerText = "--:--";
+          document.getElementById('timer').classList.remove('text-red-600');
+          if(timerInterval){ clearInterval(timerInterval); timerInterval = null; }
+        }
+
+      } catch (err) {
+        console.error('pollBallot error', err);
+      }
+    }
+
+    // Render candidate cards with Cast Vote buttons
+    function renderCandidates(candidates){
+      const container = document.getElementById('candidateList');
+      container.innerHTML = '';
+      
+      if(!candidates || candidates.length === 0){
+        container.innerHTML = `
+          <div class="no-candidates">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>No candidates configured for this constituency.</p>
+          </div>
+        `;
+        return;
+      }
+
+      candidates.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'candidate-card';
+        
+        const img = document.createElement('img');
+        const logoPath = `/static/party_logos/${c.party.toLowerCase().replace(/\s+/g,'_')}.png`;
+        img.src = logoPath;
+        img.alt = c.party;
+        img.className = 'candidate-image';
+        img.onerror = function(){ 
+          this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI0U1RTVFNSIvPjx0ZXh0IHg9IjEwMCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGRvbWluYW50LWJhc2VsaW5lPSJtaWRkbGUiIGZpbGw9IiM5QzlDOUMiPk5vIEltYWdlPC90ZXh0Pjwvc3ZnPg==';
+        };
+
+        const details = document.createElement('div');
+        details.className = 'candidate-details';
+        
+        const name = document.createElement('div');
+        name.className = 'candidate-name';
+        name.textContent = c.name;
+        
+        const party = document.createElement('div');
+        party.className = 'candidate-party';
+        party.innerHTML = `Party: <strong>${escapeHtml(c.party)}</strong>`;
+        
+        const constituency = document.createElement('div');
+        constituency.className = 'candidate-constituency';
+        constituency.textContent = `Constituency: ${c.constituency}`;
+        
+        const btn = document.createElement('button');
+        btn.className = 'vote-btn';
+        btn.innerHTML = '<i class="fas fa-vote-yea"></i> Cast Vote';
+        btn.onclick = () => castVote(c.candidate_id, c.name, c.party);
+
+        details.appendChild(name);
+        details.appendChild(party);
+        details.appendChild(constituency);
+        details.appendChild(btn);
+        
+        card.appendChild(img);
+        card.appendChild(details);
+        
+        container.appendChild(card);
+      });
+    }
+
+    // Escape HTML helper
+    function escapeHtml(s){
+      if(!s) return '';
+      return String(s).replace(/[&<>"']/g, function(m){ 
+        return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]; 
+      });
+    }
+
+    // Render queue list
+    function renderQueue(queue){
+      const qEl = document.getElementById('queueList');
+      if(!queue || queue.length === 0){
+        qEl.innerHTML = `
+          <div class="text-center text-gray-500 py-4">
+            <i class="fas fa-user-clock text-2xl mb-2"></i>
+            <p>No voters in queue</p>
+          </div>
+        `;
+        return;
+      }
+      
+      qEl.innerHTML = '';
+      queue.forEach((v, index) => {
+        const item = document.createElement('div');
+        item.className = 'queue-item';
+        
+        const number = document.createElement('div');
+        number.className = 'queue-number';
+        number.textContent = index + 1;
+        
+        const id = document.createElement('div');
+        id.textContent = v;
+        
+        item.appendChild(number);
+        item.appendChild(id);
+        qEl.appendChild(item);
+      });
+    }
+
+    // Cast vote action
+    async function castVote(candidateId, candidateName, candidateParty){
+      if(!activeVoterId){
+        alert('No active voter to cast for.');
+        return;
+      }
+      if(isCasting){
+        alert('Vote is in progress, please wait.');
+        return;
+      }
+      
+      // Create a custom confirmation dialog
+      if(!confirm(`Confirm your vote for ${candidateName} (${candidateParty})?`)) return;
+
+      isCasting = true;
+      try {
+        const payload = { voter_id: activeVoterId, candidate_id: candidateId, booth_number: booth };
+        const resp = await fetch('/api/cast_vote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const j = await resp.json();
+        if(resp.ok && j.status === 'ok'){
+          // UI success
+          document.getElementById('candidateList').innerHTML = `
+            <div class="no-candidates">
+              <i class="fas fa-check-circle text-green-500"></i>
+              <p>✅ Your vote has been recorded.</p>
+              <p class="mt-2">Receipt will be printed at the Receipt Machine.</p>
+            </div>
+          `;
+          // stop timer
+          if(timerInterval){ clearInterval(timerInterval); timerInterval = null; }
+          document.getElementById('timer').innerText = "--:--";
+          // produce audible + visual confirmation locally
+          playBeep();
+          flashScreen('blue');
+          // next poll will pick next in queue
+        } else {
+          alert('Error casting vote: ' + (j.message || 'unknown'));
+        }
+      } catch(err){
+        console.error('castVote error', err);
+        alert('Failed to cast vote: ' + err);
+      } finally {
+        isCasting = false;
+      }
+    }
+
+    // Initial poll + interval
+    pollBallot();
+    setInterval(pollBallot, 1500);
+
+    // Periodically update queue even if no active ballot changed (every 5s)
+    setInterval(async ()=>{
+      try {
+        const resp = await fetch('/api/activity_feed');
+        const data = resp.ok ? await resp.json() : [];
+        const queue = data.filter(e => e.type === 'ballot' && e.booth === booth && e.status === 'activated').map(e => e.voter_id);
+        if(JSON.stringify(queue) !== JSON.stringify(lastPollQueue)){
+          lastPollQueue = queue;
+          renderQueue(queue);
+        }
+      } catch(e){
+        console.error('queue poll error', e);
+      }
+    }, 5000);
+  </script>
+</body>
+</html>

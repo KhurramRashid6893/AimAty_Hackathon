@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Face Scan Verification — Bharat Votes</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Noto+Serif+Devanagari:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --saffron: #FF9933;
+      --white: #FFFFFF;
+      --green: #138808;
+      --navy: #000080;
+      --light-blue: #E6F0FF;
+      --light-green: #E6FFE6;
+      --light-saffron: #FFF0E0;
+      --dark-blue: #1E3A8A;
+    }
+    
+    body {
+      font-family: 'Hind Siliguri', sans-serif;
+      background-color: #f8fafc;
+    }
+    
+    .brand-font {
+      font-family: 'Noto Serif Devanagari', serif;
+    }
+    
+    .header-gradient {
+      background: linear-gradient(135deg, var(--saffron) 0%, var(--green) 100%);
+    }
+    
+    .footer-gradient {
+      background: linear-gradient(135deg, var(--light-saffron) 0%, var(--light-green) 100%);
+      border-top: 2px solid var(--green);
+    }
+    
+    .ashoka-wheel {
+      width: 40px;
+      height: 40px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 极狐 24 24'%3E%3Cpath d='M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 22c-5.514 0-10-4.486-10-10S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10zm4.5-12.5c0 .828-.672 1.5-1.5 1.5s-1.5-.672-1.5-1.5.672-1.5 1.5-1.5 1.5.672 1.5 1.5zm-9 0c0 .828-.672 1.5-1.5 1.5s-1.5-.672-1.5-1.5.672-1.5 1.5-1.5 1.5.672 1.5 1.5zm9.5 4.5h-9c-.828 0-1.5-.672-1.5-1.5s.672-1.5 1.5-1.5h9c.828 0 1.5.672 1.5 1.5s-.672 1.5-1.5 1.5z' fill='%23FFFFFF'/%3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    
+    .ashoka-wheel-small {
+      width: 24px;
+      height: 24px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='极狐 http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0C5.373 0 0 5.373 0 12s5.373 12 12 极狐 12 12-5.373 12-12S18.627 0 12 0zm0 22c-5.514 0-10-4.486-10-10S6.486 2 12 2s10 4.486 10 10-4.486 10-10 10zm4.5-12.5c0 .828-.672 1.5-1.5 1.5s-1.5-.672-1.5-1.5.672-1.5 1.5-1.5 1.5.672 1.5 1.5zm-9 0c0 .828-.672 1.5-1.5 1.5s-1.5-.672-1.5-1.5.672-1.5 1.5-1.5 1.5.672 1.5 1.5zm9.5 4.5h-9c-.828 0-1.5-.672-1.5-1.5s.672-1.5 1.5-1.5h9c.828 0 1.5.672 1.5 1.5s-.672 1.5-1.5 1.5z' fill='%23000'/%极狐 %3E%3C/svg%3E");
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    
+    .header-btn {
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .header-btn-login {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+    
+    .header-btn-login:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    .header-btn-signup {
+      background-color: white;
+      color: var(--green);
+    }
+    
+    .header-btn-signup:hover {
+      background-color: var(--light-green);
+    }
+    
+    .flash-message {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .flash-success {
+      background-color: #D极狐 FAE5;
+      color: #065F46;
+      border-left: 4px solid #10B981;
+    }
+    
+    .flash-danger {
+      background-color: #FEE2E2;
+      color: #B91C1C;
+      border-left: 4px solid #EF4444;
+    }
+    
+    .flash-info {
+      background-color: #DBEAFE;
+      color: #1E40AF;
+      border-left: 4px solid #3B82F6;
+    }
+    
+    .scanner-container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      padding: 32px;
+      margin-bottom: 24px;
+      border: 1px solid #E5E7EB;
+      text-align: center;
+    }
+    
+    .scanner-video {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      margin: 0 auto;
+      background: #F3F4F6;
+      min-height: 270px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    .scanner-placeholder {
+      color: #6B7280;
+      text-align: center;
+      padding: 40px 20px;
+    }
+    
+    .scanner-placeholder i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      display: block;
+      color: #9CA3AF;
+    }
+    
+    .scanner-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-top: 24px;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #D1D5DB;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: var(--saffron);
+      box-shadow: 0 0 0 3px rgba(255, 153, 51, 0.2);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, var(--saffron) 0%, var(--green) 100%);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .btn-primary:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .btn-secondary {
+      background: #F3F4F6;
+      color: #374151;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    .btn-secondary:hover {
+      background: #E5E7EB;
+    }
+    
+    .verification-result {
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 24px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+    }
+    
+    .verification-success {
+      background-color: #D1FAE5;
+      color: #065F46;
+      border: 1px solid #10B981;
+    }
+    
+    .verification-error {
+      background-color: #FEE2E2;
+      color: #B91C1C;
+      border: 1px solid #EF4444;
+    }
+    
+    .verification-waiting {
+      background-color: #DBEAFE;
+      color: #1E40AF;
+      border: 1px solid #3B82F6;
+    }
+    
+    .instructions-list {
+      background: #F9FAFB;
+      padding: 24px;
+      border-radius: 12px;
+      margin-top: 32px;
+      border: 1px solid #E5E7EB;
+    }
+    
+    .instructions-list h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .instructions-list ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    
+    .instructions-list li {
+      padding: 8px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    
+    .instructions-list li i {
+      color: var(--saffron);
+      margin-top: 4px;
+    }
+    
+    @media (max-width: 640px) {
+      .scanner-container {
+        padding: 20px;
+      }
+      
+      .scanner-video {
+        min-height: 200px;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50 relative">
+
+  <header class="header-gradient shadow-lg p-4 flex justify-between items-center sticky top-0 z-50">
+    <div class="flex items-center space-x-4">
+      <div class="flex items-center">
+        <div class="ashoka-wheel mr-3"></div>
+        <h1 class="text-3xl font-bold text-white brand-font drop-shadow-md">Bharat Votes</h1>
+      </div>
+      <div class="hidden md:block text-white text-sm">
+        <p>Empowering Democracy Through Technology</p>
+      </div>
+    </div>
+    <nav class="flex items-center space-x-4">
+      <a href="{{ url_for('main.login') }}" class="header-btn header-btn-login">
+        <i class="fas fa-sign-in-alt mr-2"></i>Login
+      </a>
+      <a href="{{ url_for('main.signup') }}" class="header-btn header-btn-signup">
+        <i class="fas fa-user-plus mr-2"></i>Sign Up
+      </a>
+    </nav>
+  </header>
+
+  <div class="container mx-auto mt-4 px-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="space-y-2">
+          {% for category, message in messages %}
+            <div class="flash-message flash-{{ category }}">
+              <i class="fas {% if category=='success' %}fa-check-circle{% elif category=='danger' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} mr-2"></i>
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+  </div>
+
+  <main id="main-content" class="flex-grow container mx-auto px-4 py-8">
+    <div class="max-w-3xl mx-auto">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-gray-800">Face Scan Verification</h2>
+        <p class="text-gray-600 mt-2">Verify your identity using facial recognition technology</p>
+      </div>
+      
+      <div class="scanner-container">
+        <div class="scanner-video">
+          <video id="scannerVideo" width="480" height="360" autoplay muted style="display: none;"></video>
+          <div id="scannerPlaceholder" class="scanner-placeholder">
+            <i class="fas fa-camera"></i>
+            <p>Camera feed will appear here</p>
+          </div>
+        </div>
+        
+        <div class="scanner-controls">
+          <div>
+            <label for="boothInput" class="block text-sm font-medium text-gray-700 mb-2">Booth Number</label>
+            <input type="text" id="boothInput" class="form-input" placeholder="Booth (e.g., B1)" value="B1" />
+          </div>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button id="startCamBtn" class="btn-secondary">
+              <i class="fas fa-play-circle"></i> Start Camera
+            </button>
+            <button id="captureBtn" class="btn-primary" disabled>
+              <i class="fas fa-camera"></i> Capture & Verify
+            </button>
+          </div>
+        </div>
+        
+        <div id="scanResult" class="verification-result verification-waiting" style="display: none;">
+          <i class="fas fa-circle-notch fa-spin"></i> Waiting for verification...
+        </div>
+      </div>
+      
+      <div class="instructions-list">
+        <h3><i class="fas fa-info-circle"></i> Instructions for Face Scanning</h3>
+        <ul>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>Ensure you are in a well-lit environment with no strong backlight</div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>Position your face clearly within the camera frame</div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>Remove sunglasses, hats, or anything that obscures your face</div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>Keep still while the camera captures your image</div>
+          </li>
+          <li>
+            <i class="fas fa-check-circle"></i>
+            <div>Make sure you're at the correct booth station before verification</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer-gradient text-gray-800 py-6 mt-8 text-center">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-center items-center mb-4">
+        <div class="ashoka-wheel-small mr-2"></div>
+        <p class="font-bold">Bharat Votes</p>
+      </div>
+      <p class="text-sm">&copy; 2025 Next Gen Voting. All rights reserved.</p>
+      <p class="text-xs mt-2">Empowering Indian Democracy Through Secure Digital Voting</p>
+    </div>
+  </footer>
+
+  <script>
+    const video = document.getElementById('scannerVideo');
+    const placeholder = document.getElementById('scannerPlaceholder');
+    const startBtn = document.getElementById('startCamBtn');
+    const captureBtn = document.getElementById('captureBtn');
+    const resultEl = document.getElementById('scanResult');
+    
+    // Update button states based on camera status
+    function updateButtonStates(hasCamera) {
+      captureBtn.disabled = !hasCamera;
+      if (hasCamera) {
+        captureBtn.classList.remove('btn-secondary');
+        captureBtn.classList.add('btn-primary');
+        placeholder.style.display = 'none';
+        video.style.display = 'block';
+      } else {
+        captureBtn.classList.remove('btn-primary');
+        captureBtn.classList.add('btn-secondary');
+        video.style.display = 'none';
+        placeholder.style.display = 'block';
+      }
+    }
+    
+    // Start camera
+    startBtn.addEventListener('click', () => {
+      startCam('scannerVideo');
+    });
+    
+    async function startCam(videoId) {
+      try {
+        startBtn.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Starting...';
+        startBtn.disabled = true;
+        
+        const stream = await navigator.mediaDevices.getUserMedia({ 
+          video: { 
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          } 
+        });
+        
+        video.srcObject = stream;
+        video.play();
+        
+        updateButtonStates(true);
+        startBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Restart Camera';
+        startBtn.disabled = false;
+        
+      } catch(err) {
+        console.error("Camera error:", err);
+        alert("Could not access camera: " + err.message);
+        startBtn.innerHTML = '<i class="fas fa-play-circle"></i> Start Camera';
+        startBtn.disabled = false;
+        updateButtonStates(false);
+      }
+    }
+    
+    // Capture and verify
+    captureBtn.addEventListener('click', async () => {
+      const booth = document.getElementById('boothInput').value.trim() || 'B1';
+      
+      if(!video.srcObject){
+        alert("Camera not started!");
+        return;
+      }
+      
+      // Show verifying state
+      resultEl.style.display = 'block';
+      resultEl.className = 'verification-result verification-waiting';
+      resultEl.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> Verifying...';
+      
+      captureBtn.disabled = true;
+      startBtn.disabled = true;
+      
+      try {
+        // Capture frame
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth || 480;
+        canvas.height = video.videoHeight || 360;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        
+        const blob = await new Promise(res => canvas.toBlob(res, 'image/jpeg', 0.8));
+        const fd = new FormData();
+        fd.append('booth_number', booth);
+        fd.append('face', blob, 'capture.jpg');
+        
+        const resp = await fetch('/api/face_scan', { 
+          method: 'POST', 
+          body: fd 
+        });
+        
+        const j = await resp.json();
+        
+        if(resp.ok){
+          if(j.activate){
+            resultEl.className = 'verification-result verification-success';
+            resultEl.innerHTML = `<i class="fas fa-check-circle"></i> ${j.message}`;
+          } else {
+            resultEl.className = 'verification-result verification-error';
+            resultEl.innerHTML = `<i class="fas fa-times-circle"></i> ${j.message}`;
+          }
+        } else {
+          resultEl.className = 'verification-result verification-error';
+          resultEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error: ${j.message || 'Verification failed'}`;
+        }
+      } catch(err) {
+        resultEl.className = 'verification-result verification-error';
+        resultEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Request failed: ${err.message}`;
+      } finally {
+        captureBtn.disabled = false;
+        startBtn.disabled = false;
+      }
+    });
+    
+    // Initial state
+    updateButtonStates(false);
+  </script>
+</body>
+</html>
