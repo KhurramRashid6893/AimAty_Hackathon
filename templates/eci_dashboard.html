@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">ECI Dashboard</h2>
+
+  <!-- Candidate Nominations -->
+  <div class="card p-3 shadow-sm mb-4">
+    <h4>Candidate Nominations</h4>
+    {% if candidates %}
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Party</th>
+            <th>Constituency</th>
+            <th>Status</th>
+            <th>Documents</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for c in candidates %}
+          <tr>
+            <td>{{ c.name }}</td>
+            <td>{{ c.party }}</td>
+            <td>{{ c.constituency }}</td>
+            <td>
+              {% if c.status == "Pending" %}
+                <span class="badge bg-warning text-dark">Pending</span>
+              {% elif c.status == "Approved" %}
+                <span class="badge bg-success">Approved</span>
+              {% elif c.status == "Rejected" %}
+                <span class="badge bg-danger">Rejected</span>
+              {% endif %}
+            </td>
+            <td>
+              <a href="/{{ c.affidavit }}" target="_blank">Affidavit</a><br>
+              <a href="/{{ c.property_cert }}" target="_blank">Property</a><br>
+              <a href="/{{ c.education_cert }}" target="_blank">Education</a><br>
+              <a href="/{{ c.criminal_record }}" target="_blank">Criminal</a>
+            </td>
+            <td>
+              <a href="{{ url_for('main.approve_candidate', id=c.id) }}" class="btn btn-success btn-sm">Approve</a>
+              <a href="{{ url_for('main.reject_candidate', id=c.id) }}" class="btn btn-danger btn-sm">Reject</a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>No nominations submitted yet.</p>
+    {% endif %}
+  </div>
+
+  <!-- Voting Stats (Admin Dashboard Info) -->
+  <div class="card p-3 shadow-sm">
+    <h4>Voting Statistics</h4>
+    <p><strong>Total Votes:</strong> {{ total_votes }}</p>
+
+    <h5 class="mt-3">Candidate-wise Tally</h5>
+    <ul>
+      {% for r in candidate_results %}
+        <li>{{ r.candidate.name }} ({{ r.candidate.party }}, {{ r.candidate.constituency }}) 
+          → {{ r.count }} votes
+        </li>
+      {% endfor %}
+    </ul>
+
+    <h5 class="mt-3">Party-wise Tally</h5>
+    <ul>
+      {% for party, cnt in party_tally %}
+        <li>{{ party }} → {{ cnt }} votes</li>
+      {% endfor %}
+    </ul>
+
+    <h5 class="mt-3">Constituency-wise Tally</h5>
+    <ul>
+      {% for constituency, cnt in constituency_tally %}
+        <li>{{ constituency }} → {{ cnt }} votes</li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

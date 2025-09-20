@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4">Candidate Dashboard</h2>
+
+  <p><strong>Aadhaar:</strong> {{ cand.aadhaar }}</p>
+
+  {% if nomination %}
+    <!-- Nomination Details -->
+    <div class="card p-4 shadow-sm">
+      <h4 class="mb-3">Your Nomination</h4>
+      <p><strong>Name:</strong> {{ nomination.name }}</p>
+      <p><strong>Date of Birth:</strong> {{ nomination.dob }}</p>
+      <p><strong>Address:</strong> {{ nomination.address }}</p>
+      <p><strong>Party:</strong> {{ nomination.party }}</p>
+      <p><strong>Constituency:</strong> {{ nomination.constituency }}</p>
+      <p><strong>Email:</strong> {{ nomination.email }}</p>
+      <p><strong>Phone:</strong> {{ nomination.phone }}</p>
+      <p><strong>Status:</strong>
+        {% if nomination.status == "Pending" %}
+          <span class="badge bg-warning text-dark">Pending</span>
+        {% elif nomination.status == "Approved" %}
+          <span class="badge bg-success">Approved</span>
+        {% elif nomination.status == "Rejected" %}
+          <span class="badge bg-danger">Rejected</span>
+        {% endif %}
+      </p>
+
+      <h5 class="mt-3">Uploaded Documents</h5>
+      <ul>
+        <li><a href="/{{ nomination.affidavit }}" target="_blank">Affidavit</a></li>
+        <li><a href="/{{ nomination.property_cert }}" target="_blank">Property Certificate</a></li>
+        <li><a href="/{{ nomination.education_cert }}" target="_blank">Education Certificate</a></li>
+        <li><a href="/{{ nomination.criminal_record }}" target="_blank">Criminal Record Declaration</a></li>
+      </ul>
+    </div>
+  {% else %}
+    <!-- No nomination yet -->
+    <div class="alert alert-info">
+      You have not applied for a nomination yet.
+    </div>
+    <a href="{{ url_for('main.candidates') }}" class="btn btn-primary">Apply for Nomination</a>
+  {% endif %}
+
+  <div class="mt-4">
+    <a href="{{ url_for('main.candidate_logout') }}" class="btn btn-danger">Logout</a>
+  </div>
+</div>
+{% endblock %}
