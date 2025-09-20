@@ -193,12 +193,18 @@
       </div>
     </div>
     <nav class="flex items-center space-x-4">
-      <a href="{{ url_for('main.login') }}" class="header-btn header-btn-login">
-        <i class="fas fa-sign-in-alt mr-2"></i>Login
+      <a href="{{ url_for('main.logout') }}" class="header-btn header-btn-signup">
+        <i class="fas fa-sign-out-alt mr-2"></i>Logout
       </a>
-      <a href="{{ url_for('main.signup') }}" class="header-btn header-btn-signup">
-        <i class="fas fa-user-plus mr-2"></i>Sign Up
-      </a>
+      <select id="language-selector" class="px-2 py-1 border rounded bg-white text-gray-800">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी</option>
+        <option value="mr">मराठी</option>
+        <option value="gu">ગુજરાતી</option>
+        <option value="ta">தமிழ்</option>
+        <option value="te">తెలుగు</option>
+        <option value="ur">اردو</option>
+      </select>
     </nav>
   </header>
 
@@ -220,50 +226,50 @@
   <main id="main-content" class="flex-grow container mx-auto px-4 py-8">
     <div class="max-w-6xl mx-auto">
       <div class="flex items-center justify-between mb-8">
-        <h2 class="text-3xl font-bold text-gray-800">Voter Dashboard</h2>
+        <h2 class="text-3xl font-bold text-gray-800" data-translate="voter_dashboard_title">Voter Dashboard</h2>
         <a href="/voter_face_scan" class="action-button">
-          <i class="fas fa-camera mr-2"></i>Go to Face Scan at Booth
+          <i class="fas fa-camera mr-2"></i><span data-translate="go_to_face_scan">Go to Face Scan at Booth</span>
         </a>
       </div>
       
       <div class="dashboard-card">
-        <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b">Your Voter Information</h3>
+        <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b" data-translate="voter_info_title">Your Voter Information</h3>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div>
-            <h4 class="text-sm font-medium text-gray-500 mb-2">Voter ID</h4>
+            <h4 class="text-sm font-medium text-gray-500 mb-2" data-translate="voter_id_label">Voter ID</h4>
             <p class="text-lg font-semibold text-gray-800">{{ voter.voter_id }}</p>
           </div>
           
           <div>
-            <h4 class="text-sm font-medium text-gray-500 mb-2">Aadhaar Number</h4>
+            <h4 class="text-sm font-medium text-gray-500 mb-2" data-translate="aadhaar_number_label">Aadhaar Number</h4>
             <p class="text-lg font-semibold text-gray-800">{{ voter.aadhaar }}</p>
           </div>
         </div>
         
         <div class="flex flex-wrap">
           <span class="info-badge info-badge-primary">
-            <i class="fas fa-id-card mr-2"></i>Registered Voter
+            <i class="fas fa-id-card mr-2"></i><span data-translate="registered_voter_badge">Registered Voter</span>
           </span>
           <span class="info-badge info-badge-secondary">
-            <i class="fas fa-check-circle mr-2"></i>Verified Account
+            <i class="fas fa-check-circle mr-2"></i><span data-translate="verified_account_badge">Verified Account</span>
           </span>
         </div>
       </div>
       
       <div class="dashboard-card">
-        <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b">Voter Details</h3>
+        <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b" data-translate="voter_details_title">Voter Details</h3>
         
         <div class="overflow-x-auto">
           <table class="voter-table">
             <thead>
               <tr>
-                <th>Father's Name</th>
-                <th>Gender</th>
-                <th>Address</th>
-                <th>Assembly</th>
-                <th>Part No</th>
-                <th>Serial No</th>
+                <th data-translate="father_name_col">Father's Name</th>
+                <th data-translate="gender_col">Gender</th>
+                <th data-translate="address_col">Address</th>
+                <th data-translate="assembly_col">Assembly</th>
+                <th data-translate="part_no_col">Part No</th>
+                <th data-translate="serial_no_col">Serial No</th>
               </tr>
             </thead>
             <tbody>
@@ -275,7 +281,7 @@
                     {% if d.gender == 'Male' %}bg-blue-100 text-blue-800
                     {% elif d.gender == 'Female' %}bg-pink-100 text-pink-800
                     {% else %}bg-gray-100 text-gray-800{% endif %}">
-                    {{ d.gender }}
+                    <span data-translate="gender_{{ d.gender | lower }}">{{ d.gender }}</span>
                   </span>
                 </td>
                 <td>{{ d.address }}</td>
@@ -291,24 +297,24 @@
       
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div class="dashboard-card">
-          <h3 class="text-xl font-semibold text-gray-800 mb-4">Voting Status</h3>
+          <h3 class="text-xl font-semibold text-gray-800 mb-4" data-translate="voting_status_title">Voting Status</h3>
           <div class="flex items-center">
             <div class="rounded-full bg-amber-100 p-3 mr-4">
               <i class="fas fa-hourglass-half text-amber-600 text-xl"></i>
             </div>
             <div>
-              <p class="text-gray-600">You haven't voted yet in the current election</p>
-              <p class="text-sm text-gray-500 mt-1">Visit your polling booth to cast your vote</p>
+              <p class="text-gray-600" data-translate="voting_status_desc_1">You haven't voted yet in the current election</p>
+              <p class="text-sm text-gray-500 mt-1" data-translate="voting_status_desc_2">Visit your polling booth to cast your vote</p>
             </div>
           </div>
         </div>
         
         <div class="dashboard-card">
-          <h3 class="text-xl font-semibold text-gray-800 mb-4">Need Help?</h3>
-          <p class="text-gray-600 mb-4">If you have any questions about the voting process, contact your polling station official.</p>
+          <h3 class="text-xl font-semibold text-gray-800 mb-4" data-translate="help_title">Need Help?</h3>
+          <p class="text-gray-600 mb-4" data-translate="help_desc">If you have any questions about the voting process, contact your polling station official.</p>
           <div class="flex items-center text-sm text-gray-500">
             <i class="fas fa-phone-alt mr-2"></i>
-            <span>Polling Station Helpline: 1950</span>
+            <span data-translate="helpline_label">Polling Station Helpline: 1950</span>
           </div>
         </div>
       </div>
@@ -326,5 +332,35 @@
     </div>
   </footer>
 
+  <script>
+    // Universal translation function
+    function setLanguage(lang) {
+      const elements = document.querySelectorAll('[data-translate]');
+      elements.forEach(el => {
+        const key = el.getAttribute('data-translate');
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+      // Translate title
+      const pageTitleEl = document.querySelector('title');
+      if (pageTitleEl && translations[lang] && translations[lang]['page_title_voter_dashboard']) {
+          pageTitleEl.textContent = translations[lang]['page_title_voter_dashboard'];
+      }
+    }
+
+    const languageSelector = document.getElementById('language-selector');
+    if (languageSelector) {
+        languageSelector.addEventListener('change', (event) => {
+            setLanguage(event.target.value);
+        });
+        setLanguage('en');
+    }
+    
+    // Back button log out warning
+    window.onbeforeunload = function() {
+        return "Going back will log you out. Do you want to proceed?";
+    };
+  </script>
 </body>
 </html>

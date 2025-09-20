@@ -3,13 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard — Bharat Votes</title>
+  <title data-translate="page_title_admin_dashboard">Admin Dashboard — Bharat Votes</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Noto+Serif+Devanagari:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="{{ url_for('static', filename='js/translations.js') }}"></script>
   <style>
     :root {
       --saffron: #FF9933;
@@ -255,12 +256,18 @@
       </div>
     </div>
     <nav class="flex items-center space-x-4">
-      <a href="{{ url_for('main.login') }}" class="header-btn header-btn-login">
-        <i class="fas fa-sign-in-alt mr-2"></i>Login
+      <a href="{{ url_for('main.logout') }}" class="header-btn header-btn-signup">
+        <i class="fas fa-sign-out-alt mr-2"></i><span data-translate="logout_btn">Logout</span>
       </a>
-      <a href="{{ url_for('main.signup') }}" class="header-btn header-btn-signup">
-        <i class="fas fa-user-plus mr-2"></i>Sign Up
-      </a>
+      <select id="language-selector" class="px-2 py-1 border rounded bg-white text-gray-800">
+        <option value="en">English</option>
+        <option value="hi">हिन्दी</option>
+        <option value="mr">मराठी</option>
+        <option value="gu">ગુજરાતી</option>
+        <option value="ta">தமிழ்</option>
+        <option value="te">తెలుగు</option>
+        <option value="ur">اردو</option>
+      </select>
     </nav>
   </header>
 
@@ -282,20 +289,19 @@
   <main id="main-content" class="flex-grow container mx-auto px-4 py-8">
     <div class="max-w-7xl mx-auto">
       <div class="flex items-center justify-between mb-8">
-        <h2 class="text-3xl font-bold text-gray-800">Admin Dashboard</h2>
+        <h2 class="text-3xl font-bold text-gray-800" data-translate="admin_dashboard_title">Admin Dashboard</h2>
         <div class="text-sm text-gray-500">
-          <i class="fas fa-shield-alt mr-1"></i> Administrator Access
+          <i class="fas fa-shield-alt mr-1"></i> <span data-translate="admin_access_label">Administrator Access</span>
         </div>
       </div>
       
-      <!-- Stats Overview -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div class="stat-card">
           <div class="stat-icon bg-blue-100 text-blue-600">
             <i class="fas fa-vote-yea text-xl"></i>
           </div>
           <div class="stat-value">{{ total_votes }}</div>
-          <div class="stat-label">Total Votes Cast</div>
+          <div class="stat-label" data-translate="total_votes_label">Total Votes Cast</div>
         </div>
         
         <div class="stat-card">
@@ -303,7 +309,7 @@
             <i class="fas fa-users text-xl"></i>
           </div>
           <div class="stat-value">{{ candidate_results|length }}</div>
-          <div class="stat-label">Candidates</div>
+          <div class="stat-label" data-translate="candidates_label">Candidates</div>
         </div>
         
         <div class="stat-card">
@@ -311,7 +317,7 @@
             <i class="fas fa-flag text-xl"></i>
           </div>
           <div class="stat-value">{{ party_tally|length }}</div>
-          <div class="stat-label">Political Parties</div>
+          <div class="stat-label" data-translate="parties_label">Political Parties</div>
         </div>
         
         <div class="stat-card">
@@ -319,14 +325,13 @@
             <i class="fas fa-map-marker-alt text-xl"></i>
           </div>
           <div class="stat-value">{{ constituency_tally|length }}</div>
-          <div class="stat-label">Constituencies</div>
+          <div class="stat-label" data-translate="constituencies_label">Constituencies</div>
         </div>
       </div>
       
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        <!-- Candidate Tally -->
         <div class="dashboard-card">
-          <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b">Candidate Tally</h3>
+          <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b" data-translate="candidate_tally_title">Candidate Tally</h3>
           <div class="chart-container">
             <canvas id="candidateChart"></canvas>
           </div>
@@ -334,8 +339,8 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Candidate</th>
-                  <th>Votes</th>
+                  <th data-translate="candidate_col">Candidate</th>
+                  <th data-translate="votes_col">Votes</th>
                 </tr>
               </thead>
               <tbody>
@@ -350,9 +355,8 @@
           </div>
         </div>
         
-        <!-- Party Tally -->
         <div class="dashboard-card">
-          <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b">Party Tally</h3>
+          <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b" data-translate="party_tally_title">Party Tally</h3>
           <div class="chart-container">
             <canvas id="partyChart"></canvas>
           </div>
@@ -360,8 +364,8 @@
             <table class="data-table">
               <thead>
                 <tr>
-                  <th>Party</th>
-                  <th>Votes</th>
+                  <th data-translate="party_col">Party</th>
+                  <th data-translate="votes_col">Votes</th>
                 </tr>
               </thead>
               <tbody>
@@ -377,15 +381,14 @@
         </div>
       </div>
       
-      <!-- Constituency Tally -->
       <div class="dashboard-card mb-8">
-        <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b">Constituency Tally</h3>
+        <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b" data-translate="constituency_tally_title">Constituency Tally</h3>
         <div class="overflow-x-auto">
           <table class="data-table">
             <thead>
               <tr>
-                <th>Constituency</th>
-                <th>Votes</th>
+                <th data-translate="constituency_col">Constituency</th>
+                <th data-translate="votes_col">Votes</th>
               </tr>
             </thead>
             <tbody>
@@ -401,46 +404,44 @@
       </div>
       
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-        <!-- Manual Trigger -->
         <div class="dashboard-card">
-          <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b">Manual Ballot Activation</h3>
-          <p class="text-gray-600 mb-4">Enter Aadhaar + VoterID to activate ballot remotely:</p>
+          <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b" data-translate="manual_ballot_title">Manual Ballot Activation</h3>
+          <p class="text-gray-600 mb-4" data-translate="manual_ballot_desc">Enter Aadhaar + VoterID to activate ballot remotely:</p>
           
           <div class="space-y-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Aadhaar Number</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1" data-translate="aadhaar_label">Aadhaar Number</label>
               <input type="text" id="ajax_aadhaar" placeholder="Aadhaar" class="form-input" />
             </div>
             
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Voter ID</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1" data-translate="voter_id_label">Voter ID</label>
               <input type="text" id="ajax_vid" placeholder="Voter ID" class="form-input" />
             </div>
             
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Booth Number</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1" data-translate="booth_number_label">Booth Number</label>
               <input type="text" id="ajax_booth" placeholder="Booth" value="B1" class="form-input" />
             </div>
             
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Note (Optional)</label>
+              <label class="block text-sm font-medium text-gray-700 mb-1" data-translate="note_label">Note (Optional)</label>
               <input type="text" id="ajax_note" placeholder="Note" class="form-input" />
             </div>
             
             <button id="ajax_trigger_btn" class="btn-primary w-full">
-              <i class="fas fa-bolt mr-2"></i>Activate Ballot
+              <i class="fas fa-bolt mr-2"></i><span data-translate="activate_ballot_btn">Activate Ballot</span>
             </button>
             
             <div id="ajax_trigger_res" class="p-3 bg-gray-100 rounded-lg text-sm mt-4"></div>
           </div>
         </div>
         
-        <!-- Live Activity Feed -->
         <div class="dashboard-card">
-          <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b">Live Activity Feed</h3>
+          <h3 class="text-xl font-semibold text-gray-800 mb-6 pb-2 border-b" data-translate="live_activity_title">Live Activity Feed</h3>
           <div id="activityFeed" class="h-96 overflow-y-auto space-y-3">
             <div class="text-center py-8 text-gray-500">
-              <i class="fas fa-circle-notch fa-spin mr-2"></i> Loading activities...
+              <i class="fas fa-circle-notch fa-spin mr-2"></i> <span data-translate="loading_activities">Loading activities...</span>
             </div>
           </div>
         </div>
@@ -454,12 +455,36 @@
         <div class="ashoka-wheel-small mr-2"></div>
         <p class="font-bold">Bharat Votes</p>
       </div>
-      <p class="text-sm">&copy; 2025 Next Gen Voting. All rights reserved.</p>
-      <p class="text-xs mt-2">Empowering Indian Democracy Through Secure Digital Voting</p>
+      <p class="text-sm" data-translate="footer_copyright">&copy; 2025 Next Gen Voting. All rights reserved.</p>
+      <p class="text-xs mt-2" data-translate="footer_slogan">Empowering Indian Democracy Through Secure Digital Voting</p>
     </div>
   </footer>
 
   <script>
+    function setLanguage(lang) {
+      // Translate title
+      const pageTitleEl = document.querySelector('title');
+      if (pageTitleEl && translations[lang] && translations[lang]['page_title_admin_dashboard']) {
+          pageTitleEl.textContent = translations[lang]['page_title_admin_dashboard'];
+      }
+      
+      const elements = document.querySelectorAll('[data-translate]');
+      elements.forEach(el => {
+        const key = el.getAttribute('data-translate');
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+    }
+
+    const languageSelector = document.getElementById('language-selector');
+    if (languageSelector) {
+        languageSelector.addEventListener('change', (event) => {
+            setLanguage(event.target.value);
+        });
+        setLanguage('en');
+    }
+
     document.getElementById('ajax_trigger_btn').addEventListener('click', async ()=>{
       const aadhaar = document.getElementById('ajax_aadhaar').value.trim();
       const voter_id = document.getElementById('ajax_vid').value.trim();
@@ -468,7 +493,7 @@
       if(!aadhaar || !voter_id){ alert('Enter both Aadhaar and Voter ID'); return; }
       
       const resultEl = document.getElementById('ajax_trigger_res');
-      resultEl.innerHTML = '<div class="text-blue-600"><i class="fas fa-spinner fa-spin mr-2"></i> Processing...</div>';
+      resultEl.innerHTML = '<div class="text-blue-600"><i class="fas fa-spinner fa-spin mr-2"></i> <span data-translate="processing_msg">Processing...</span></div>';
       
       const resp = await fetch('/api/manual_override',{
         method:'POST',
@@ -492,7 +517,7 @@
         feed.innerHTML = '';
         
         if(data.length === 0) {
-          feed.innerHTML = '<div class="text-center py-8 text-gray-500">No recent activities</div>';
+          feed.innerHTML = '<div class="text-center py-8 text-gray-500"><span data-translate="no_recent_activities">No recent activities</span></div>';
           return;
         }
         
@@ -503,37 +528,37 @@
           if(ev.type==='ballot'){
             div.className += ' activity-ballot';
             div.innerHTML = `<div class="flex justify-between items-start">
-              <div><i class="fas fa-vote-yea mr-2 text-amber-500"></i> Ballot <b>${ev.status}</b> for voter <b>${ev.voter_id}</b></div>
+              <div><i class="fas fa-vote-yea mr-2 text-amber-500"></i> <span data-translate="ballot_status">Ballot</span> <b>${ev.status}</b> <span data-translate="for_voter">for voter</span> <b>${ev.voter_id}</b></div>
               <div class="text-xs text-gray-500">${ev.time}</div>
             </div>
-            <div class="text-xs text-gray-600 mt-1">Booth: ${ev.booth}</div>`;
+            <div class="text-xs text-gray-600 mt-1" data-translate="booth_label">Booth: ${ev.booth}</div>`;
           } else if(ev.type==='vote'){
             div.className += ' activity-vote';
             div.innerHTML = `<div class="flex justify-between items-start">
-              <div><i class="fas fa-check-circle mr-2 text-green-500"></i> Vote cast by <b>${ev.voter_id}</b> for candidate <b>${ev.candidate_id}</b></div>
+              <div><i class="fas fa-check-circle mr-2 text-green-500"></i> <span data-translate="vote_cast_by">Vote cast by</span> <b>${ev.voter_id}</b> <span data-translate="for_candidate">for candidate</span> <b>${ev.candidate_id}</b></div>
               <div class="text-xs text-gray-500">${ev.time}</div>
             </div>
-            <div class="text-xs text-gray-600 mt-1">Receipt: ${ev.receipt} | Booth: ${ev.booth}</div>`;
+            <div class="text-xs text-gray-600 mt-1"><span data-translate="receipt_label">Receipt</span>: ${ev.receipt} | <span data-translate="booth_label">Booth</span>: ${ev.booth}</div>`;
           } else if(ev.type==='new_voter'){
             div.className += ' activity-new';
             div.innerHTML = `<div class="flex justify-between items-start">
-              <div><i class="fas fa-user-plus mr-2 text-blue-500"></i> New voter <b>${ev.voter_id}</b> registered</div>
+              <div><i class="fas fa-user-plus mr-2 text-blue-500"></i> <span data-translate="new_voter_reg">New voter</span> <b>${ev.voter_id}</b> <span data-translate="registered">registered</span></div>
               <div class="text-xs text-gray-500">${ev.time}</div>
             </div>
-            <div class="text-xs text-gray-600 mt-1">Aadhaar: ${ev.aadhaar} (via ${ev.note})</div>`;
+            <div class="text-xs text-gray-600 mt-1"><span data-translate="aadhaar_label">Aadhaar</span>: ${ev.aadhaar} (<span data-translate="via_label">via</span> ${ev.note})</div>`;
           } else if(ev.type==='mismatch'){
             div.className += ' activity-mismatch';
             div.innerHTML = `<div class="flex justify-between items-start">
-              <div><i class="fas fa-exclamation-triangle mr-2 text-red-500"></i> Mismatch logged for Aadhaar <b>${ev.aadhaar}</b></div>
+              <div><i class="fas fa-exclamation-triangle mr-2 text-red-500"></i> <span data-translate="mismatch_logged">Mismatch logged for Aadhaar</span> <b>${ev.aadhaar}</b></div>
               <div class="text-xs text-gray-500">${ev.time}</div>
             </div>
-            <div class="text-xs text-gray-600 mt-1">Voter ID: ${ev.voter_id}</div>`;
+            <div class="text-xs text-gray-600 mt-1"><span data-translate="voter_id_label">Voter ID</span>: ${ev.voter_id}</div>`;
           }
           feed.appendChild(div);
         });
       }catch(e){ 
         console.error(e);
-        document.getElementById('activityFeed').innerHTML = '<div class="text-red-500">Error loading activity feed</div>';
+        document.getElementById('activityFeed').innerHTML = '<div class="text-red-500" data-translate="error_loading_feed">Error loading activity feed</div>';
       }
     }
     
@@ -595,6 +620,11 @@
     // Poll activity feed every 3 seconds
     setInterval(pollFeed, 3000);
     pollFeed();
+
+    // Back button log out warning
+    window.onbeforeunload = function() {
+        return "Going back will log you out. Do you want to proceed?";
+    };
   </script>
 </body>
 </html>

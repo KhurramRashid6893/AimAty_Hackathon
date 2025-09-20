@@ -304,3 +304,33 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+
+
+/* In static/css/layout.css */
+body {
+  font-family: 'Hind Siliguri', sans-serif;
+  background-color: #f8fafc;
+  font-size: 18px; /* Larger base font size */
+}
+
+/* Make form labels and inputs larger */
+.form-label {
+  font-size: 1.25rem; /* Large font for labels */
+}
+.form-input {
+  padding: 16px 20px;
+  font-size: 1.1rem;
+}
+
+/* High-contrast mode (you can add a toggle button) */
+body.high-contrast {
+  background-color: #000;
+  color: #fff;
+}
+.high-contrast .dashboard-card,
+.high-contrast .scanner-container,
+.high-contrast .w-full.max-w-lg.bg-white {
+  background-color: #333;
+  color: #fff;
+}

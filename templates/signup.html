@@ -10,6 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Noto+Serif+Devanagari:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+  <script src="{{ url_for('static', filename='js/translations.js') }}"></script>
 </head>
 <body class="min-h-screen flex flex-col relative">
 
@@ -50,61 +51,94 @@
 
   <main id="main-content" class="flex-grow">
     <section class="min-h-screen flex items-center justify-center bg-gray-100 py-12">
-  <div class="w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
-    <h2 class="text-3xl font-bold mb-6 text-center gradient-text">📝 Voter Signup</h2>
-
-    {% with messages = get_flashed_messages(with_categories=true) %}
-      {% if messages %}
-        <div class="space-y-2 mb-4">
-          {% for category, message in messages %}
-            <div class="p-3 rounded text-white {% if category=='success' %}bg-green-500{% elif category=='danger' %}bg-red-500{% else %}bg-blue-500{% endif %}">
-              {{ message }}
-            </div>
-          {% endfor %}
+      <div class="w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-3xl font-bold gradient-text" data-translate="title">📝 Voter Signup</h2>
+          <div class="language-switcher">
+            <select id="language-selector" class="px-2 py-1 border rounded">
+              <option value="en">English</option>
+              <option value="hi">हिन्दी</option>
+              <option value="mr">मराठी</option>
+              <option value="gu">ગુજરાતી</option>
+              <option value="ta">தமிழ்</option>
+              <option value="te">తెలుగు</option>
+              <option value="ur">اردو</option>
+            </select>
+          </div>
         </div>
-      {% endif %}
-    {% endwith %}
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="space-y-2 mb-4">
+              {% for category, message in messages %}
+                <div class="p-3 rounded text-white {% if category=='success' %}bg-green-500{% elif category=='danger' %}bg-red-500{% else %}bg-blue-500{% endif %}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
 
-    <form method="POST" action="{{ url_for('main.signup') }}" enctype="multipart/form-data" class="space-y-4">
-      <div>
-        <label for="name" class="block text-gray-700 font-medium mb-1">Full Name</label>
-        <input type="text" id="name" name="name" required
-               class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+        <form method="POST" action="{{ url_for('main.signup') }}" enctype="multipart/form-data" class="space-y-4">
+          <div>
+            <label for="name" class="block text-gray-700 font-medium mb-1" data-translate="name_label">Full Name</label>
+            <div class="flex items-center space-x-2">
+              <input type="text" id="name" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+              <button type="button" class="mic-btn p-2 rounded-full bg-gray-200" data-field="name">
+                <i class="fas fa-microphone"></i>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label for="dob" class="block text-gray-700 font-medium mb-1" data-translate="dob_label">Date of Birth</label>
+            <div class="flex items-center space-x-2">
+              <input type="date" id="dob" name="dob" required class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+              <button type="button" class="mic-btn p-2 rounded-full bg-gray-200" data-field="dob">
+                <i class="fas fa-microphone"></i>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label for="aadhaar" class="block text-gray-700 font-medium mb-1" data-translate="aadhaar_label">Aadhaar Number</label>
+            <div class="flex items-center space-x-2">
+              <input type="text" id="aadhaar" name="aadhaar" required class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+              <button type="button" class="mic-btn p-2 rounded-full bg-gray-200" data-field="aadhaar">
+                <i class="fas fa-microphone"></i>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label for="voter_id" class="block text-gray-700 font-medium mb-1" data-translate="voter_id_label">Voter ID</label>
+            <div class="flex items-center space-x-2">
+              <input type="text" id="voter_id" name="voter_id" required class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+              <button type="button" class="mic-btn p-2 rounded-full bg-gray-200" data-field="voter_id">
+                <i class="fas fa-microphone"></i>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <label for="face" class="block text-gray-700 font-medium mb-1" data-translate="face_label">Face Image</label>
+            <div class="flex items-center space-x-2">
+              <input type="file" id="face" name="face" accept="image/*" capture="user" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
+              <button type="button" class="mic-btn p-2 rounded-full bg-gray-200" data-field="face">
+                <i class="fas fa-microphone"></i>
+              </button>
+            </div>
+            <p id="file-tip" class="text-sm text-gray-500 mt-1" data-translate="file_tip">📷 Please capture a clear face photo using your webcam or upload one.</p>
+          </div>
+
+          <button type="submit" class="btn primary-btn w-full" data-translate="submit_btn">Register as Voter</button>
+        </form>
+
+        <p class="text-center text-gray-600 mt-6">
+          <span data-translate="login_link">Already registered? <a href="{{ url_for('main.login') }}" class="text-indigo-600 font-medium hover:underline">Login here</a></span>
+        </p>
       </div>
-
-      <div>
-        <label for="dob" class="block text-gray-700 font-medium mb-1">Date of Birth</label>
-        <input type="date" id="dob" name="dob" required
-               class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-      </div>
-
-      <div>
-        <label for="aadhaar" class="block text-gray-700 font-medium mb-1">Aadhaar Number</label>
-        <input type="text" id="aadhaar" name="aadhaar" required
-               class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-      </div>
-
-      <div>
-        <label for="voter_id" class="block text-gray-700 font-medium mb-1">Voter ID</label>
-        <input type="text" id="voter_id" name="voter_id" required
-               class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-      </div>
-
-      <div>
-        <label for="face" class="block text-gray-700 font-medium mb-1">Face Image</label>
-        <input type="file" id="face" name="face" accept="image/*" capture="user"
-               class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500" />
-        <p class="text-sm text-gray-500 mt-1">📷 Please capture a clear face photo using your webcam or upload one.</p>
-      </div>
-
-      <button type="submit" class="btn primary-btn w-full">Register as Voter</button>
-    </form>
-
-    <p class="text-center text-gray-600 mt-6">
-      Already registered? <a href="{{ url_for('main.login') }}" class="text-indigo-600 font-medium hover:underline">Login here</a>
-    </p>
-  </div>
-</section>
+    </section>
   </main>
 
   <footer class="footer-gradient text-gray-800 py-6 mt-8 text-center">
@@ -118,5 +152,105 @@
     </div>
   </footer>
 
+  <script>
+    const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    const synth = window.speechSynthesis;
+
+    const formFields = [
+      {id: 'name', prompt_key: 'name_label'},
+      {id: 'dob', prompt_key: 'dob_label'},
+      {id: 'aadhaar', prompt_key: 'aadhaar_label'},
+      {id: 'voter_id', prompt_key: 'voter_id_label'},
+      {id: 'face', prompt_key: 'face_label'},
+    ];
+
+    function setLanguage(lang) {
+      const elements = document.querySelectorAll('[data-translate]');
+      elements.forEach(el => {
+        const key = el.getAttribute('data-translate');
+        if (translations[lang] && translations[lang][key]) {
+            el.textContent = translations[lang][key];
+        }
+      });
+      // Handle the placeholder text
+      const fileTip = document.getElementById('file-tip');
+      if (fileTip) {
+          fileTip.textContent = translations[lang]['file_tip'];
+      }
+    }
+
+    document.getElementById('language-selector').addEventListener('change', (event) => {
+      setLanguage(event.target.value);
+    });
+
+    // Set initial language
+    setLanguage('en');
+
+    function speak(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      const lang = document.getElementById('language-selector').value;
+      
+      const langMap = {
+          'en': 'en-US',
+          'hi': 'hi-IN',
+          'mr': 'mr-IN',
+          'gu': 'gu-IN',
+          'ta': 'ta-IN',
+          'te': 'te-IN',
+          'ur': 'ur-PK'
+      };
+      
+      utterance.lang = langMap[lang] || 'en-US';
+      synth.speak(utterance);
+    }
+
+    function startListening(fieldId) {
+      const selectedLang = document.getElementById('language-selector').value;
+      const fieldData = formFields.find(f => f.id === fieldId);
+      const promptText = translations[selectedLang][fieldData.prompt_key];
+      
+      if (fieldId === 'face') {
+          speak(`Please click on the 'Choose File' button to upload your face image. You can also capture one using your webcam.`);
+          return;
+      }
+
+      speak(`Please say your ${promptText}`);
+
+      recognition.lang = selectedLang;
+      recognition.onresult = (event) => {
+        const speechResult = event.results[0][0].transcript;
+        let finalValue = speechResult;
+
+        if (fieldId === 'dob') {
+            try {
+                const date = new Date(speechResult);
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
+                finalValue = `${year}-${month}-${day}`;
+            } catch(e) {
+                console.error("Error parsing date:", e);
+                speak("I could not understand the date. Please try again or type it manually.");
+                return;
+            }
+        }
+
+        document.getElementById(fieldId).value = finalValue;
+        
+        speak(`You said your ${promptText} is ${finalValue}. Is this correct?`);
+      };
+
+      recognition.onend = () => {};
+      
+      recognition.start();
+    }
+
+    document.querySelectorAll('.mic-btn').forEach(button => {
+      button.addEventListener('click', (event) => {
+        const fieldId = event.currentTarget.getAttribute('data-field');
+        startListening(fieldId);
+      });
+    });
+  </script>
 </body>
 </html>

@@ -112,8 +112,8 @@ def voter_dashboard():
     voter = Voter.query.filter_by(voter_id=session.get('voter_id')).first()
     dummy_details = [
         { 'father_name': 'Ramesh Kumar', 'gender': 'Male', 'address': 'Ward 5, Patna', 'assembly': 'Patna Sahib', 'part_no': '12', 'serial_no': '45' },
-        { 'father_name': 'Mohammad Ali', 'gender': 'Male', 'address': 'Gaya City', 'assembly': 'Gaya', 'part_no': '7', 'serial_no': '101' },
-        { 'father_name': 'Sushila Devi', 'gender': 'Female', 'address': 'Hajipur', 'assembly': 'Hajipur', 'part_no': '3', 'serial_no': '22' },
+        # { 'father_name': 'Mohammad Ali', 'gender': 'Male', 'address': 'Gaya City', 'assembly': 'Gaya', 'part_no': '7', 'serial_no': '101' },
+        # { 'father_name': 'Sushila Devi', 'gender': 'Female', 'address': 'Hajipur', 'assembly': 'Hajipur', 'part_no': '3', 'serial_no': '22' },
     ]
     return render_template('voter_dashboard.html', voter=voter, dummy_details=dummy_details)
 
